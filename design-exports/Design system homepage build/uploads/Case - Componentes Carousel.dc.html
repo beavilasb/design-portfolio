@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    body{margin:0;}
+  </style>
+</helmet>
+<div style="max-width:1400px;margin:0 auto;padding:48px 24px 64px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:#111111;">
+
+  <div style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:28px;flex-wrap:wrap;">
+    <div>
+      <div style="font-size:13px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#6B6B6B;margin-bottom:6px;">Design system</div>
+      <h1 style="font-size:32px;font-weight:700;margin:0;">Componentes — showcase</h1>
+    </div>
+    <div style="font-size:15px;color:#6B6B6B;">{{ currentNumber }} / {{ total }}</div>
+  </div>
+
+  <div style="position:relative;border-radius:16px;overflow:hidden;background:#F7F7F6;box-shadow:0 20px 50px -15px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.06);">
+    <div style="width:100%;aspect-ratio:1920/1080;position:relative;">
+      <sc-for list="{{ slides }}" as="slide" hint-placeholder-count="6">
+        <img src="{{ slide.src }}" alt="{{ slide.category }}" style="{{ slide.imgStyle }}"/>
+      </sc-for>
+    </div>
+
+    <button onClick="{{ prev }}" aria-label="Anterior" style="position:absolute;top:50%;left:20px;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;border:none;background:rgba(17,17,17,0.55);color:#FFFFFF;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);" style-hover="background:rgba(17,17,17,0.75);">‹</button>
+    <button onClick="{{ next }}" aria-label="Próximo" style="position:absolute;top:50%;right:20px;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;border:none;background:rgba(17,17,17,0.55);color:#FFFFFF;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);" style-hover="background:rgba(17,17,17,0.75);">›</button>
+  </div>
+
+  <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:24px;">
+    <sc-for list="{{ dots }}" as="dot" hint-placeholder-count="6">
+      <button onClick="{{ dot.onClick }}" aria-label="{{ dot.label }}" style="{{ dot.style }}"></button>
+    </sc-for>
+  </div>
+
+  <div style="text-align:center;margin-top:18px;">
+    <div style="font-size:12px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;color:#003CFD;margin-bottom:4px;">{{ currentCategory }}</div>
+    <div style="font-size:20px;font-weight:600;">{{ currentTitle }}</div>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { index: 0 };
+
+  data = [
+    { category: 'Actions', title: 'Button', src: 'assets/comp-01-actions.png' },
+    { category: 'Forms', title: 'Text fields', src: 'assets/comp-02-forms-text.png' },
+    { category: 'Forms', title: 'Toggles', src: 'assets/comp-03-forms-toggles.png' },
+    { category: 'Feedback', title: 'Toasts, Alerts & Dialog', src: 'assets/comp-04-feedback.png' },
+    { category: 'Navigation', title: 'Header, Tabs & Breadcrumb', src: 'assets/comp-05-navigation.png' },
+    { category: 'Data display', title: 'Table, Accordion, Tooltip & Avatar', src: 'assets/comp-06-data-display.png' },
+  ];
+
+  componentDidMount() {
+    this._onKey = (e) => {
+      if (e.key === 'ArrowRight') this.next();
+      if (e.key === 'ArrowLeft') this.prev();
+    };
+    window.addEventListener('keydown', this._onKey);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this._onKey);
+  }
+
+  goTo(i) {
+    const n = this.data.length;
+    this.setState({ index: ((i % n) + n) % n });
+  }
+
+  next() { this.goTo(this.state.index + 1); }
+  prev() { this.goTo(this.state.index - 1); }
+
+  renderVals() {
+    const { index } = this.state;
+    const slides = this.data.map((d, i) => ({
+      ...d,
+      imgStyle: `width:100%;height:100%;object-fit:cover;object-position:top;display:block;position:absolute;inset:0;opacity:${i === index ? 1 : 0};transition:opacity 0.35s ease;`,
+    }));
+    const dots = this.data.map((d, i) => ({
+      label: d.title,
+      onClick: () => this.goTo(i),
+      style: `width:${i === index ? 22 : 8}px;height:8px;border-radius:4px;border:none;cursor:pointer;background:${i === index ? '#003CFD' : '#D9D9D6'};transition:all 0.25s ease;padding:0;`,
+    }));
+    return {
+      slides,
+      dots,
+      total: this.data.length,
+      currentNumber: index + 1,
+      currentCategory: this.data[index].category,
+      currentTitle: this.data[index].title,
+      next: () => this.next(),
+      prev: () => this.prev(),
+    };
+  }
+}
+
+</script>
+</body>
+</html>

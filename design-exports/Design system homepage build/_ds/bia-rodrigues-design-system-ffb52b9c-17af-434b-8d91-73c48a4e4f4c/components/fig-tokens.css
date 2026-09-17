@@ -1,0 +1,18 @@
+/* Generated from Figma Variables. First mode = :root default.
+   FLOAT tokens are unitless — multiply by 1px in calc() where a length is needed. */
+
+:root {
+  --dark-grey: rgb(141,141,141); /* @kind color */
+  --dark: rgb(31,31,31); /* @kind color */
+  --grey: rgb(247,247,247); /* @kind color */
+  --medium-grey: rgb(225,225,225); /* @kind color */
+  --mint-light: rgb(204,255,239); /* @kind color */
+  --mint: rgb(0,108,73); /* @kind color */
+  --static-display-small-weight-emphasized: var(--static-weight-medium);
+  --static-weight-medium: "Medium";
+  --white: rgb(255,255,255); /* @kind color */
+}
+
+:root[data-mode="wireframe"] {
+  --static-weight-medium: "Regular";
+}
