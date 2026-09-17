@@ -1,0 +1,5 @@
+:root{--dark:#1F1F1F;--white:#FFFFFF;--mint:#006C49;--mint-light:#CCFFEF;--grey-50:#F7F7F7;--grey-100:#E1E1E1;--grey-200:#D7D7D7;--grey-400:#BDBDBD;--grey-500:#8D8D8D;--grey-600:#737373;--grey-800:#222222;
+--color-bg:var(--white);--color-bg-alt:var(--grey-50);--color-bg-accent:var(--mint-light);--color-bg-inverse:var(--dark);
+--color-text:var(--dark);--color-text-inverse:var(--white);--color-text-muted:var(--grey-500);--color-text-label:var(--grey-500);
+--color-accent:var(--mint);--color-border:var(--grey-100);--color-border-strong:var(--dark);
+--color-link:var(--mint);--color-link-hover:#005038;}
